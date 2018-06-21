@@ -1,0 +1,21 @@
+extends Node2D
+var correctPositions
+var currentPosition
+var rotatable
+
+onready var anim = get_node("Area2D/anim")
+
+func _on_Area2D_input_event(viewport, event, shape_idx):
+	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.is_pressed():
+		self.on_click()
+		
+func on_click():
+	if( ! get_parent().get_parent().maze_is_valid() ):
+		#print("trans from " + str(currentPosition) + " to " + str((currentPosition + 1) % 4))
+		currentPosition = (currentPosition + 1) % 4
+		anim.play("rotateTo"+str(currentPosition))
+
+func valid():
+	if(correctPositions.find(currentPosition) >= 0):
+		return true
+	return false
