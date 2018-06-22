@@ -81,6 +81,8 @@ func _ready():
 	pass
 	
 func prepare_maze():
+	get_node("WinMessage").hide()
+	solved = false
 	randomize()
 	grid = create_maze(width, height)
 	mine_from(0,0)
