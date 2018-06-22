@@ -1,0 +1,90 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://MainMenu.gd" type="Script" id=1]
+[ext_resource path="res://graphics/easy.png" type="Texture" id=2]
+[ext_resource path="res://graphics/medium.png" type="Texture" id=3]
+[ext_resource path="res://graphics/hard.png" type="Texture" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 231.861, 69.9834 )
+
+[sub_resource type="RectangleShape2D" id=2]
+
+custom_solver_bias = 0.0
+extents = Vector2( 231.504, 68.2893 )
+
+[sub_resource type="RectangleShape2D" id=3]
+
+custom_solver_bias = 0.0
+extents = Vector2( 230.747, 66.6575 )
+
+[node name="MainMenu" type="Node2D"]
+
+script = ExtResource( 1 )
+
+[node name="Easy" type="Area2D" parent="." index="0"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+
+[node name="Sprite" type="Sprite" parent="Easy" index="0"]
+
+texture = ExtResource( 2 )
+
+[node name="collision" type="CollisionShape2D" parent="Easy" index="1"]
+
+shape = SubResource( 1 )
+
+[node name="Medium" type="Area2D" parent="." index="1"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+
+[node name="Sprite" type="Sprite" parent="Medium" index="0"]
+
+position = Vector2( 0, 180.972 )
+texture = ExtResource( 3 )
+
+[node name="collision" type="CollisionShape2D" parent="Medium" index="1"]
+
+position = Vector2( 3.05176e-05, 181.667 )
+shape = SubResource( 2 )
+
+[node name="Hard" type="Area2D" parent="." index="2"]
+
+position = Vector2( 0, 369.727 )
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+
+[node name="Sprite" type="Sprite" parent="Hard" index="0"]
+
+texture = ExtResource( 4 )
+
+[node name="collision" type="CollisionShape2D" parent="Hard" index="1"]
+
+shape = SubResource( 3 )
+
+[connection signal="input_event" from="Easy" to="." method="_on_Easy_input_event"]
+
+[connection signal="input_event" from="Medium" to="." method="_on_Medium_input_event"]
+
+[connection signal="input_event" from="Hard" to="." method="_on_Hard_input_event"]
+
+

@@ -14,6 +14,7 @@ func on_click():
 		#print("trans from " + str(currentPosition) + " to " + str((currentPosition + 1) % 4))
 		currentPosition = (currentPosition + 1) % 4
 		anim.play("rotateTo"+str(currentPosition))
+		get_parent().get_parent().maze_is_valid()
 
 func valid():
 	if(correctPositions.find(currentPosition) >= 0):

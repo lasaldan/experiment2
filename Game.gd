@@ -77,11 +77,14 @@ func create_maze(w,h):
 	return maze
 		
 func _ready():
+	get_node("WinMessage").hide()
+	pass
+	
+func prepare_maze():
 	randomize()
 	grid = create_maze(width, height)
 	mine_from(0,0)
 	place_pieces()
-	pass
 	
 func maze_is_valid():
 	var correctCount = 0
@@ -95,10 +98,13 @@ func maze_is_valid():
 
 	if(wrongCount == 0):
 		solved = true
+		get_node("WinMessage").show()
 		
 	return solved
 	
 func place_pieces():
+	for child in pieces_container.get_children():
+		child.queue_free()
 	var size = boardSize / width
 	var rowIndex = 0
 	for row in grid:
