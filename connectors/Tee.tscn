@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://piece.gd" type="Script" id=1]
-[ext_resource path="res://graphics/tee.png" type="Texture" id=2]
+[ext_resource path="res://connectors/tee.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -100,7 +100,7 @@ audio_bus_name = "Master"
 
 [node name="Sprite" type="Sprite" parent="Area2D" index="0"]
 
-texture = ExtResource( 2 )
+script = ExtResource( 2 )
 _sections_unfolded = [ "Offset", "Transform" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="1"]

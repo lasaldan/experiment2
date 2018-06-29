@@ -2,17 +2,35 @@
 
 [ext_resource path="res://main.gd" type="Script" id=1]
 [ext_resource path="res://graphics/bg.png" type="Texture" id=2]
-[ext_resource path="res://graphics/game.png" type="Texture" id=3]
-[ext_resource path="res://GameBG.gd" type="Script" id=4]
-[ext_resource path="res://Game.tscn" type="PackedScene" id=5]
-[ext_resource path="res://graphics/back.png" type="Texture" id=6]
-[ext_resource path="res://graphics/MainMenuBG.png" type="Texture" id=7]
-[ext_resource path="res://MainMenu.tscn" type="PackedScene" id=8]
+[ext_resource path="res://GameBG.gd" type="Script" id=3]
+[ext_resource path="res://Game.tscn" type="PackedScene" id=4]
+[ext_resource path="res://graphics/back.png" type="Texture" id=5]
+[ext_resource path="res://MainMenu.tscn" type="PackedScene" id=6]
+[ext_resource path="res://audio/menubg.wav" type="AudioStream" id=7]
 
 [sub_resource type="CircleShape2D" id=1]
 
 custom_solver_bias = 0.0
 radius = 57.1641
+
+[sub_resource type="Animation" id=2]
+
+resource_name = "gameMusicFadeIn"
+length = 0.5
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("gameMusic:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ -80.0, 0.0 ]
+}
 
 [node name="Main" type="Node"]
 
@@ -55,16 +73,16 @@ _sections_unfolded = [ "Anchor", "Margin" ]
 
 [node name="GameBG" type="Sprite" parent="playarea" index="0"]
 
-texture = ExtResource( 3 )
-script = ExtResource( 4 )
+script = ExtResource( 3 )
+_sections_unfolded = [ "Offset", "Transform" ]
 
-[node name="Game" parent="playarea/GameBG" index="0" instance=ExtResource( 5 )]
+[node name="Game" parent="playarea/GameBG" index="0" instance=ExtResource( 4 )]
 
-position = Vector2( -384, -384 )
-_sections_unfolded = [ "Transform" ]
+editor/display_folded = true
 
 [node name="backButton" type="Area2D" parent="playarea/GameBG" index="1"]
 
+editor/display_folded = true
 position = Vector2( 0, 500 )
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
@@ -78,7 +96,7 @@ _sections_unfolded = [ "Transform" ]
 [node name="back" type="Sprite" parent="playarea/GameBG/backButton" index="0"]
 
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 6 )
+texture = ExtResource( 5 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="collision" type="CollisionShape2D" parent="playarea/GameBG/backButton" index="1"]
@@ -87,14 +105,34 @@ shape = SubResource( 1 )
 
 [node name="MainMenuBG" type="Sprite" parent="playarea" index="1"]
 
-texture = ExtResource( 7 )
 _sections_unfolded = [ "Offset" ]
 
-[node name="MainMenu" parent="playarea/MainMenuBG" index="0" instance=ExtResource( 8 )]
+[node name="MainMenu" parent="playarea/MainMenuBG" index="0" instance=ExtResource( 6 )]
 
 position = Vector2( 0, -142.665 )
-_sections_unfolded = [ "Transform" ]
+
+[node name="Sounds" type="Node" parent="." index="2"]
+
+[node name="gameMusic" type="AudioStreamPlayer" parent="Sounds" index="0"]
+
+stream = ExtResource( 7 )
+volume_db = 0.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="anim" type="AnimationPlayer" parent="Sounds" index="1"]
+
+root_node = NodePath("..")
+autoplay = ""
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/gameMusicFadeIn = SubResource( 2 )
+blend_times = [  ]
+_sections_unfolded = [ "Playback Options" ]
 
 [connection signal="input_event" from="playarea/GameBG/backButton" to="playarea/GameBG" method="_on_backButton_input_event"]
 
 
+[editable path="playarea/GameBG/Game"]

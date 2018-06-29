@@ -18,5 +18,6 @@ func _ready():
 func _on_backButton_input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.is_pressed():
 		hide()
-		get_parent().get_node("MainMenuBG").show()
+		get_parent().get_node("MainMenuBG").get_node("MainMenu").get_node("anim").play("fadeIn")
+		get_parent().get_node("MainMenuBG/MainMenu").show()
 

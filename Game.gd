@@ -7,6 +7,7 @@ var FourWay = load("res://connectors/FourWay.tscn")
 var End = load("res://connectors/End.tscn")
 
 onready var pieces_container = get_node("PiecesContainer")
+onready var algorithms = get_node("Algorithms")
 
 var width = 10
 var height = 10
@@ -16,65 +17,14 @@ var EAST = 2
 var SOUTH = 4
 var WEST = 8
 
-var pieceSize = 256
-var boardSize = 768
+var algorithm = "Recursive"
+
+var pieceSize = 256.0
+var boardSize = 952.0
 
 var solved = false
 
 var grid = []
-
-func shuffleList(list):
-    var shuffledList = [] 
-    var indexList = range(list.size())
-    for i in range(list.size()):
-        var x = randi()%indexList.size()
-        shuffledList.append(list[indexList[x]])
-        indexList.remove(x)
-    return shuffledList
-
-func opposite(dir):
-	if(dir == NORTH): 
-		return SOUTH
-		
-	elif(dir == SOUTH): 
-		return NORTH
-		
-	elif(dir == EAST): 
-		return WEST
-		
-	elif(dir == WEST): 
-		return EAST
-
-func mine_from(currentX, currentY):
-	var directions = [NORTH, SOUTH, EAST, WEST]
-	directions = shuffleList(directions)
-	
-	for dir in directions:
-		var newX = currentX
-		var newY = currentY
-		
-		if(dir == EAST):
-			newX = currentX + 1
-		elif(dir == WEST):
-			newX = currentX - 1
-		elif(dir == NORTH):
-			newY = currentY - 1
-		elif(dir == SOUTH):
-			newY = currentY + 1
-			
-		if(newY >= 0 && newY < height && newX >=0 && newX < width && grid[newY][newX] == 0):
-			grid[currentY][currentX] += dir
-			grid[newY][newX] += opposite(dir)
-			mine_from(newX, newY)
-			
-
-func create_maze(w,h):
-	var maze = []
-	for y in range(h):
-		maze.append([])
-		for x in range(w):
-			maze[y].append(0)
-	return maze
 		
 func _ready():
 	get_node("WinMessage").hide()
@@ -84,8 +34,9 @@ func prepare_maze():
 	get_node("WinMessage").hide()
 	solved = false
 	randomize()
-	grid = create_maze(width, height)
-	mine_from(0,0)
+	self.grid = algorithms.get_node(algorithm).generate(width, height)
+	print(algorithm)
+
 	place_pieces()
 	
 func maze_is_valid():
@@ -104,11 +55,32 @@ func maze_is_valid():
 		
 	return solved
 	
+func _draw():
+	var size = boardSize / width
+	var color = Color(255,255,255,.4)
+	var stroke = 1
+	var boardOffset = boardSize/-2
+	
+	#horizontal grid rows
+	var rowIndex = 0
+	for row in grid:
+		draw_line(Vector2(boardOffset,size * rowIndex + boardOffset), Vector2(boardSize + boardOffset, size*rowIndex + boardOffset), color, stroke)
+		rowIndex += 1
+	draw_line(Vector2(boardOffset,size * rowIndex + boardOffset), Vector2(boardSize + boardOffset, size*rowIndex + boardOffset), color, stroke)
+		
+	var colIndex = 0
+	for col in grid[0]:
+		draw_line(Vector2(size * colIndex + boardOffset, boardOffset), Vector2(size * colIndex + boardOffset, boardSize + boardOffset), color, stroke)
+		colIndex += 1
+	draw_line(Vector2(size * colIndex + boardOffset, boardOffset), Vector2(size * colIndex + boardOffset, boardSize + boardOffset), color, stroke)
+	
 func place_pieces():
 	for child in pieces_container.get_children():
 		child.queue_free()
 	var size = boardSize / width
+	var boardOffset = boardSize/-2
 	var rowIndex = 0
+
 	for row in grid:
 		var colIndex = 0
 		
@@ -181,7 +153,7 @@ func place_pieces():
 				piece = End.instance()
 				piece.correctPositions = [0]
 				
-			piece.position = Vector2(colIndex * size + size/2, rowIndex * size + size/2)
+			piece.position = Vector2(colIndex * size + size/2 + boardOffset, rowIndex * size + size/2 + boardOffset)
 			piece.scale = Vector2(size/float(pieceSize), size/float(pieceSize))
 
 			var rot = randi()%4

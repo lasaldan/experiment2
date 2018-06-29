@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://MainMenu.gd" type="Script" id=1]
-[ext_resource path="res://graphics/easy.png" type="Texture" id=2]
-[ext_resource path="res://graphics/medium.png" type="Texture" id=3]
-[ext_resource path="res://graphics/hard.png" type="Texture" id=4]
+[ext_resource path="res://graphics/MainMenuBG.png" type="Texture" id=2]
+[ext_resource path="res://graphics/easy.png" type="Texture" id=3]
+[ext_resource path="res://graphics/medium.png" type="Texture" id=4]
+[ext_resource path="res://graphics/hard.png" type="Texture" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -20,12 +21,128 @@ extents = Vector2( 231.504, 68.2893 )
 custom_solver_bias = 0.0
 extents = Vector2( 230.747, 66.6575 )
 
-[node name="MainMenu" type="Node2D"]
+[sub_resource type="Gradient" id=4]
+
+offsets = PoolRealArray( 0, 0, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 0.0877016, 0.351066, 0.5625, 1, 1, 1, 1, 1 )
+
+[sub_resource type="Animation" id=5]
+
+resource_name = "fadeIn"
+length = 2.5
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Easy:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 1.1, 2.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Medium:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1.1, 1.3, 2.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Hard:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 1.1, 1.5, 2.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Easy:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 1.1, 2.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.7, 0.7 ), Vector2( 1, 1 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Medium:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 1.3, 2.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.7, 0.7 ), Vector2( 1, 1 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Hard:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 1.5, 2.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.7, 0.7 ), Vector2( 1, 1 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Background:scale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0.6, 1.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.7, 0.7 ), Vector2( 1, 1 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Background:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0.6, 1.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[node name="MainMenu" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
+_sections_unfolded = [ "Transform" ]
 
-[node name="Easy" type="Area2D" parent="." index="0"]
+[node name="Background" type="Sprite" parent="." index="0"]
 
+modulate = Color( 1, 1, 1, 0 )
+texture = ExtResource( 2 )
+_sections_unfolded = [ "Transform", "Visibility" ]
+
+[node name="Easy" type="Area2D" parent="." index="1"]
+
+modulate = Color( 1, 1, 1, 0 )
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
@@ -33,17 +150,20 @@ linear_damp = 0.1
 angular_damp = 1.0
 audio_bus_override = false
 audio_bus_name = "Master"
+_sections_unfolded = [ "Transform" ]
 
 [node name="Sprite" type="Sprite" parent="Easy" index="0"]
 
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )
 
 [node name="collision" type="CollisionShape2D" parent="Easy" index="1"]
 
 shape = SubResource( 1 )
 
-[node name="Medium" type="Area2D" parent="." index="1"]
+[node name="Medium" type="Area2D" parent="." index="2"]
 
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 0, 180 )
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
@@ -51,20 +171,23 @@ linear_damp = 0.1
 angular_damp = 1.0
 audio_bus_override = false
 audio_bus_name = "Master"
+_sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="Sprite" type="Sprite" parent="Medium" index="0"]
 
-position = Vector2( 0, 180.972 )
-texture = ExtResource( 3 )
+texture = ExtResource( 4 )
+_sections_unfolded = [ "Offset", "Transform" ]
 
 [node name="collision" type="CollisionShape2D" parent="Medium" index="1"]
 
-position = Vector2( 3.05176e-05, 181.667 )
+position = Vector2( 3.1e-05, 0 )
 shape = SubResource( 2 )
+_sections_unfolded = [ "Transform" ]
 
-[node name="Hard" type="Area2D" parent="." index="2"]
+[node name="Hard" type="Area2D" parent="." index="3"]
 
-position = Vector2( 0, 369.727 )
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 0, 360 )
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
@@ -72,14 +195,45 @@ linear_damp = 0.1
 angular_damp = 1.0
 audio_bus_override = false
 audio_bus_name = "Master"
+_sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="Sprite" type="Sprite" parent="Hard" index="0"]
 
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 
 [node name="collision" type="CollisionShape2D" parent="Hard" index="1"]
 
 shape = SubResource( 3 )
+
+[node name="border" type="Node2D" parent="." index="4"]
+
+visible = false
+
+[node name="top" type="Line2D" parent="border" index="0"]
+
+visible = false
+points = PoolVector2Array( 100, 200, 980, 200, 980, 500, 100, 500, 100, 200 )
+width = 3.0
+default_color = Color( 1, 1, 1, 1 )
+gradient = SubResource( 4 )
+texture_mode = 112
+joint_mode = 2
+begin_cap_mode = 1
+end_cap_mode = 1
+sharp_limit = 2.0
+round_precision = 8
+_sections_unfolded = [ "Capping", "Fill" ]
+
+[node name="anim" type="AnimationPlayer" parent="." index="5"]
+
+root_node = NodePath("..")
+autoplay = ""
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 2.0
+anims/fadeIn = SubResource( 5 )
+blend_times = [  ]
+_sections_unfolded = [ "Playback Options" ]
 
 [connection signal="input_event" from="Easy" to="." method="_on_Easy_input_event"]
 
