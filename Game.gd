@@ -17,7 +17,12 @@ var EAST = 2
 var SOUTH = 4
 var WEST = 8
 
+var EASY = 0
+var MEDIUM = 1
+var HARD = 2
+
 var algorithm = "Recursive"
+var difficulty = 0
 
 var pieceSize = 256.0
 var boardSize = 952.0
@@ -25,19 +30,77 @@ var boardSize = 952.0
 var solved = false
 
 var grid = []
+var secondsElapsed = -1
+
+var highScores = {}
 		
 func _ready():
+	retrieve_high_scores()
+
 	get_node("WinMessage").hide()
+	get_node("GUI").position = Vector2(0, boardSize / -2 - 150)
+	secondsElapsed = -1
 	pass
+
+func retrieve_high_scores():
+	var file = File.new()
+	if not file.file_exists("user://flip_high_scores1.sav"):
+		highScores = [
+			{ type = "Easy", holder = "Daniel", score = -1 },
+			{ type = "Medium", holder = "Daniel", score = -1 },
+			{ type = "Hard", holder = "Daniel", score = -1 },
+		]
+		return
+	
+	# Open existing file
+	if file.open("user://flip_high_scores1.sav", File.READ) != 0:
+		highScores = [
+			{ type = "Easy", holder = "Daniel", score = -1 },
+			{ type = "Medium", holder = "Daniel", score = -1 },
+			{ type = "Hard", holder = "Daniel", score = -1 },
+		]
+		return
+	
+	highScores = JSON.parse(file.get_line()).result
+	file.close()
+	
+func save_high_scores():
+	var file = File.new()
+	if file.open("user://flip_high_scores1.sav", File.WRITE) != 0:
+	    print("Error opening file")
+	    return
+	
+	file.store_line(JSON.print(highScores))
+	file.close()
+
+func _on_SecondTicker_timeout():
+	if(solved):
+		return
+	secondsElapsed += 1
+	get_node("GUI/SecondOutput").set_text(str(intToTimeString(secondsElapsed)))
+	
+func intToTimeString(s):
+	var secondsElapsed = int(s)
+	var seconds = secondsElapsed % 60
+	var minutes = secondsElapsed % 3600 / 60
+	var elapsed = "%02d : %02d" % [minutes, seconds]
+	return elapsed
 	
 func prepare_maze():
+	secondsElapsed = -1
 	get_node("WinMessage").hide()
+	updateBestTime()
 	solved = false
 	randomize()
 	self.grid = algorithms.get_node(algorithm).generate(width, height)
-	print(algorithm)
 
 	place_pieces()
+	
+func updateBestTime():
+	if(highScores[difficulty].score == -1):
+		get_node("GUI/BestTime").text = "Best Time: --:--"
+	else:
+		get_node("GUI/BestTime").text = "Best Time: " + intToTimeString(highScores[difficulty].score)
 	
 func maze_is_valid():
 	var correctCount = 0
@@ -52,6 +115,13 @@ func maze_is_valid():
 	if(wrongCount == 0):
 		solved = true
 		get_node("WinMessage").show()
+		
+		if(secondsElapsed < highScores[difficulty].score || highScores[difficulty].score == -1):
+			highScores[difficulty].score = secondsElapsed
+			save_high_scores()
+		
+		
+
 		
 	return solved
 	

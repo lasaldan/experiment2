@@ -7,7 +7,8 @@ extends Sprite
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
-	get_node("backButton").position = Vector2(0, 600)
+	
+	get_node("backButton").position = Vector2(0, get_node("Game").boardSize / 2 + 100)
 	pass
 
 #func _process(delta):

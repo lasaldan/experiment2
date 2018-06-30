@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Game.gd" type="Script" id=1]
 [ext_resource path="res://graphics/game.png" type="Texture" id=2]
 [ext_resource path="res://graphics/solved.png" type="Texture" id=3]
 [ext_resource path="res://Algorithms.tscn" type="PackedScene" id=4]
+[ext_resource path="res://fonts/AveriaSansLibre-Bold.ttf" type="DynamicFontData" id=5]
 
 [sub_resource type="Animation" id=1]
 
@@ -36,7 +37,27 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[node name="Game" type="Node2D"]
+[sub_resource type="DynamicFontData" id=2]
+
+font_path = "res://fonts/AveriaSansLibre-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=3]
+
+size = 80
+use_mipmaps = false
+use_filter = false
+font_data = SubResource( 2 )
+_sections_unfolded = [ "Font", "Settings" ]
+
+[sub_resource type="DynamicFont" id=4]
+
+size = 30
+use_mipmaps = true
+use_filter = false
+font_data = ExtResource( 5 )
+_sections_unfolded = [ "Font", "Settings" ]
+
+[node name="Game" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
 
@@ -68,5 +89,64 @@ anims/fadeIn = SubResource( 1 )
 blend_times = [  ]
 
 [node name="Algorithms" parent="." index="4" instance=ExtResource( 4 )]
+
+[node name="SecondTicker" type="Timer" parent="." index="5"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = true
+
+[node name="GUI" type="Node2D" parent="." index="6"]
+
+[node name="SecondOutput" type="Label" parent="GUI" index="0"]
+
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -282.0
+margin_top = -64.0
+margin_right = 218.0
+margin_bottom = 36.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 3 )
+text = "00:00"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Rect", "custom_fonts" ]
+
+[node name="BestTime" type="Label" parent="GUI" index="1"]
+
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -282.0
+margin_top = 36.0
+margin_right = 218.0
+margin_bottom = 86.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 4 )
+text = "Best Time: --:--"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_fonts" ]
+
+[connection signal="timeout" from="SecondTicker" to="." method="_on_SecondTicker_timeout"]
 
 

@@ -25,22 +25,23 @@ func game():
 
 func _on_Easy_input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.is_pressed():
-		start_game(4, "Recursive")
+		start_game(4, "Recursive", game().EASY)
 
 func _on_Medium_input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.is_pressed():
-		start_game(6, "Kruskals")
+		start_game(6, "Kruskals", game().MEDIUM)
 
 func _on_Hard_input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.is_pressed():
-		start_game(8, "Kruskals")
+		start_game(8, "Kruskals", game().HARD)
 
 
-func start_game(size, algorithm):
+func start_game(size, algorithm, difficulty):
 	get_node("anim").play_backwards()
 	game().width = size
 	game().height = size
 	game().algorithm = algorithm
+	game().difficulty = difficulty
 	game().prepare_maze()
 	
 	var timer = Timer.new()
