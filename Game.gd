@@ -66,13 +66,16 @@ func _draw():
 	for row in grid:
 		draw_line(Vector2(boardOffset,size * rowIndex + boardOffset), Vector2(boardSize + boardOffset, size*rowIndex + boardOffset), color, stroke)
 		rowIndex += 1
-	draw_line(Vector2(boardOffset,size * rowIndex + boardOffset), Vector2(boardSize + boardOffset, size*rowIndex + boardOffset), color, stroke)
-		
+
 	var colIndex = 0
 	for col in grid[0]:
 		draw_line(Vector2(size * colIndex + boardOffset, boardOffset), Vector2(size * colIndex + boardOffset, boardSize + boardOffset), color, stroke)
 		colIndex += 1
-	draw_line(Vector2(size * colIndex + boardOffset, boardOffset), Vector2(size * colIndex + boardOffset, boardSize + boardOffset), color, stroke)
+	
+	draw_line(Vector2(boardOffset,size * rowIndex + boardOffset), Vector2(boardSize + boardOffset, size*rowIndex + boardOffset), color, stroke*8)
+	draw_line(Vector2(size * colIndex + boardOffset, boardOffset), Vector2(size * colIndex + boardOffset, boardSize + boardOffset), color, stroke*8)
+	draw_line(Vector2(boardOffset, boardOffset), Vector2(-boardOffset, boardOffset), color, stroke*8)
+	draw_line(Vector2(boardOffset, boardOffset), Vector2(boardOffset, boardSize + boardOffset), color, stroke*8)
 	
 func place_pieces():
 	for child in pieces_container.get_children():

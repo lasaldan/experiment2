@@ -32,6 +32,7 @@ func create_sets(w,h):
 func generate(w, h):
 	width = w
 	height = h
+	edges = []
 	grid = create_maze(width,height)
 	gridSets = create_sets(width, height)
 	get_edges()
