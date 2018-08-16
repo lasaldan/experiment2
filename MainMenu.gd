@@ -1,31 +1,38 @@
 extends Node2D
 
-# class member variables go here, for example:
-# var a = 2
-# var b = "textvar"
+var FlatButton = load("res://ui/FlatButton.tscn")
 
 func _ready():
-	# Called every time the node is added to the scene.
-	# Initialization her
+	var easyButton = FlatButton.instance()
+	easyButton.get_node("Button").text = "Easy"
+	easyButton.get_node("Button").connect("pressed", self, "ez");
+	#levelsButton.position = Vector2(0, -100)
+	get_node("Easy").add_child(easyButton)
+	
+	
+func fadeInWithDelay():
+	var timer = Timer.new()
+	timer.connect("timeout",self,"fadeIn")
+	timer.wait_time = .5
+	timer.one_shot = true
+	add_child(timer)
+	timer.start()
+	
+func fadeIn():
+	show()
 	get_node("anim").play("fadeIn")
-	pass
-
-#func _process(delta):
-#	# Called every frame. Delta is time since last frame.
-#	# Update game logic here.
-#	pass
+	
 func menuBG():
 	return get_parent().get_parent().get_node("MainMenuBG")
 	
 func gameBG():
-	return get_parent().get_parent().get_node("GameBG")
+	return get_parent().get_parent().get_node("GameLayer")
 	
 func game():
-	return get_parent().get_parent().get_node("GameBG/Game")
+	return get_parent().get_parent().get_node("GameLayer/Game")
 
-func _on_Easy_input_event(viewport, event, shape_idx):
-	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.is_pressed():
-		start_game(4, "Recursive", game().EASY)
+func ez():
+	start_game(4, "Recursive", game().EASY)
 
 func _on_Medium_input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.is_pressed():
@@ -52,6 +59,6 @@ func start_game(size, algorithm, difficulty):
 	timer.start()
 
 func _on_timer_timeout():
-	hide()
+	get_parent().hide()
 	gameBG().show()
-	gameBG().get_node("Game").get_node("anim").play("fadeIn")
+	#gameBG().get_node("Game").get_node("anim").play("fadeIn")

@@ -3,7 +3,7 @@ extends Sprite
 var size = 0
 
 func _ready():
-	size = get_tree().root.get_node("Main/playarea/GameBG/Game").pieceSize
+	size = get_tree().root.get_node("Main/playarea/GameLayer/Game").pieceSize
 
 func _draw():
 	draw_line(Vector2(0,-15), Vector2(0,size/2), Color(255,255,255), 30)
