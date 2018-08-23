@@ -39,4 +39,3 @@ func fadeInWithDelay():
 func fadeIn():
 	show()
 	get_node("anim").play("fadeIn")
-	get_node("anim").play("fadeIn")

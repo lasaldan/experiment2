@@ -100,6 +100,7 @@ audio_bus_name = "Master"
 
 [node name="Sprite" type="Sprite" parent="Area2D" index="0"]
 
+rotation = 4.71239
 script = ExtResource( 2 )
 _sections_unfolded = [ "Transform" ]
 

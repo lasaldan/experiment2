@@ -5,7 +5,7 @@ var FlatButton = load("res://ui/FlatButton.tscn")
 func _ready():
 	var easyButton = FlatButton.instance()
 	easyButton.get_node("Button").text = "Easy"
-	easyButton.get_node("Button").connect("pressed", self, "ez");
+	easyButton.get_node("Button").connect("pressed", self, "easy_game");
 	#levelsButton.position = Vector2(0, -100)
 	get_node("Easy").add_child(easyButton)
 	
@@ -31,7 +31,7 @@ func gameBG():
 func game():
 	return get_parent().get_parent().get_node("GameLayer/Game")
 
-func ez():
+func easy_game():
 	start_game(4, "Recursive", game().EASY)
 
 func _on_Medium_input_event(viewport, event, shape_idx):
@@ -59,6 +59,9 @@ func start_game(size, algorithm, difficulty):
 	timer.start()
 
 func _on_timer_timeout():
-	get_parent().hide()
+	menuBG().hide()
+
+	get_tree().root.get_node("Main/playarea/SplashMenuBG").hide()
+
 	gameBG().show()
 	#gameBG().get_node("Game").get_node("anim").play("fadeIn")

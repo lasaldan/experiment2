@@ -71,7 +71,8 @@ _sections_unfolded = [ "Offset", "Transform", "Visibility" ]
 
 [node name="PiecesContainer" type="Node2D" parent="." index="1"]
 
-_sections_unfolded = [ "Transform" ]
+z_index = 1000
+_sections_unfolded = [ "Material", "Transform", "Visibility", "Z Index" ]
 
 [node name="WinMessage" type="Sprite" parent="." index="2"]
 
